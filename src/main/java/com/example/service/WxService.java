@@ -33,7 +33,7 @@ public class WxService {
 
 	private static final String APPID = "wxbbcc503ac70293c3";
 	private static final String APPSECRET = "91284cfecad1bc9270b38269d4682a82";
-	//用于存储token
+	// 用于存储token
 	private static AccessToken at;
 
 	/**
@@ -47,12 +47,13 @@ public class WxService {
 		JSONObject jsonObject = JSONObject.parseObject(access_token_str);
 		String access_token = jsonObject.getString("access_token");
 		String expireIn = jsonObject.getString("expires_in");
-		//创建token对象,并存起来
+		// 创建token对象,并存起来
 		at = new AccessToken(access_token, expireIn);
 	}
-	
+
 	/**
 	 * 向外暴露的获取token的方法
+	 * 
 	 * @return
 	 */
 	public static String getAccessToken() {
@@ -160,6 +161,9 @@ public class WxService {
 			break;
 		case "link":
 			break;
+		case "event":
+			msg = dealEvent(requestMap);
+			break;
 		default:
 			break;
 		}
@@ -232,5 +236,58 @@ public class WxService {
 		String resp = chat(msg);
 		TextMessage tm = new TextMessage(requestMap, resp);
 		return tm;
+	}
+
+	/**
+	 * 处理事件推送
+	 * 
+	 * @param requestMap
+	 * @return
+	 * @author 詹凌瀚
+	 */
+	private static BaseMessage dealEvent(Map<String, String> requestMap) {
+		String event = requestMap.get("Event");
+		switch (event) {
+		case "CLICK":
+			return dealClick(requestMap);
+		case "VIEW":
+			return dealView(requestMap);
+		default:
+			break;
+		}
+		return null;
+	}
+
+	/**
+	 * 处理view类型的按钮的菜单
+	 * 
+	 * @param requestMap
+	 * @return
+	 * @author 詹凌瀚
+	 */
+	private static BaseMessage dealView(Map<String, String> requestMap) {
+		return null;
+	}
+
+	/**
+	 * 处理click类型的按钮的菜单
+	 * 
+	 * @param requestMap
+	 * @return
+	 * @author 詹凌瀚
+	 */
+	private static BaseMessage dealClick(Map<String, String> requestMap) {
+		String key = requestMap.get("EventKey");
+		switch (key) {
+		case "1":
+			// 处理点击了第一个一级菜单
+			return new TextMessage(requestMap, "你点了一下第一个一级菜单");
+		case "32":
+			// 处理点击了第三个一级菜单的第二个子菜单
+			break;
+		default:
+			break;
+		}
+		return null;
 	}
 }
