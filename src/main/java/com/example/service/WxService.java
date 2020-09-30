@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,9 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baidu.aip.ocr.AipOcr;
 import com.example.entity.AccessToken;
 import com.example.entity.Article;
 import com.example.entity.BaseMessage;
@@ -31,8 +34,15 @@ public class WxService {
 	private static final String Token = "weixin21312izhhann";
 	private static final String GET_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 
+	// 微信公众号
 	private static final String APPID = "wxbbcc503ac70293c3";
 	private static final String APPSECRET = "91284cfecad1bc9270b38269d4682a82";
+
+	// 百度AI
+	// 设置APPID/AK/SK
+	public static final String APP_ID = "22777431";
+	public static final String API_KEY = "6qjdg0gX1W1GLh6eexvHYVUN";
+	public static final String SECRET_KEY = "LQHF5nAK39H6EsovNVEnaYZ5GiBKG0i5";
 	// 用于存储token
 	private static AccessToken at;
 
@@ -150,6 +160,7 @@ public class WxService {
 			msg = dealTextMessage(requestMap);
 			break;
 		case "image":
+			msg = dealImage(requestMap);
 			break;
 		case "voice":
 			break;
@@ -173,6 +184,38 @@ public class WxService {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * 图像识别
+	 * 
+	 * @param requestMap
+	 * @author zhan
+	 * @return
+	 */
+	private static BaseMessage dealImage(Map<String, String> requestMap) {
+		// TODO Auto-generated method stub
+		// 初始化一个AipOcr
+		AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+
+		// 可选：设置网络连接参数
+		client.setConnectionTimeoutInMillis(2000);
+		client.setSocketTimeoutInMillis(60000);
+
+		// 调用接口
+		String path = requestMap.get("PicUrl");
+		org.json.JSONObject res = client.basicGeneralUrl(path, new HashMap<String, String>());
+		String json = res.toString();
+		// 转为jsonObject
+		JSONObject jsonObject = JSONObject.parseObject(json);
+		JSONArray jsonArray = jsonObject.getJSONArray("words_result");
+		Iterator<Object> it = jsonArray.iterator();
+		StringBuilder sb = new StringBuilder();
+		while (it.hasNext()) {
+			JSONObject next = (JSONObject) it.next();
+			sb.append(next.getString("words"));
+		}
+		return new TextMessage(requestMap, sb.toString());
 	}
 
 	/**
