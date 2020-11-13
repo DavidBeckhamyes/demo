@@ -62,4 +62,13 @@ public class TemplateMessageManager {
 		resultData = TulingUtil.post(url, requestJsonData);
 		System.out.println(resultData);
 	}
+
+	/**
+	 * 新增临时素材
+	 */
+	public void testUpload() {
+		String file = "";
+		String result = WxService.upload(file, "image");
+		System.out.println(result);
+	}
 }
