@@ -427,10 +427,10 @@ public class WxService {
 	public static String getQrCodeTicket() {
 		String at = getAccessToken();
 		String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + at;
-		//生成临时字符二维码
+		// 生成临时字符二维码
 		String data = "{\"expire_seconds\": 604800, \"action_name\": \"QR_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \"zlhzs\"}}}";
 		String result = TulingUtil.post(url, data);
-		return null;
-
+		String ticket = JSONObject.parseObject(result).getString("ticket");
+		return ticket;
 	}
 }
