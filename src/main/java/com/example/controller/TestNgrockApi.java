@@ -2,28 +2,44 @@ package com.example.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.entity.Product;
 import com.example.service.WxService;
 
-@RestController
+//@RestController
+@Controller
 @RequestMapping("/wx")
 public class TestNgrockApi {
-	
-	@RequestMapping("/index")
-    public String indexWeb(ModelMap map) {
-        return "index";
-    }
 
+	@RequestMapping("/index")
+	public String indexWeb(ModelMap map) {
+		return "index";
+	}
+
+	@RequestMapping("/welcome")
+	public String welcome(Map<String, Object> map) {
+		// 给Thymeleaf 准备数据
+		map.put("welcome", "欢迎来到王者荣耀"); // 给request域中方welcome
+		List<Product> prods = new ArrayList<>();
+		prods.add(new Product("a", 100, 10));
+		prods.add(new Product("b", 200, 20));
+		prods.add(new Product("c", 300, 30));
+		map.put("prods", prods);
+		return "thymeleaf";
+	}
 
 	@RequestMapping("/test")
 	public String index() {
