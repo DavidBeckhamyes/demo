@@ -4,6 +4,22 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script type="text/javascript">
+function getQR() {
+	$.ajax({
+		method : 'GET'
+    	url : 'http://localhost:18192/wx/QR',
+    	success : function (data) {
+            console.log(data);
+            var src = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket="+data;
+            $("img").attr("src",src)
+        },
+        error: function(err) {
+            console.log(err);
+        }
+});
+}
+</script>
 <body>
 	<p th:text="${welcome}">welcome to thymeleaf...</p>
 	<tr th:each="prod:${prods}">
@@ -11,5 +27,7 @@
 		<td th:text="${prod.price}"></td>
 		<td th:text="${prod.inStock}"></td>
 	</tr>
+	<button th:onclick="'javascript:getQR()'">生成二维码</button>
+	<img src="" alt="" />
 </body>
 </html>

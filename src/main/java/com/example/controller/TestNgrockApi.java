@@ -24,9 +24,10 @@ import com.example.service.WxService;
 @RequestMapping("/wx")
 public class TestNgrockApi {
 
-	@RequestMapping("/index")
-	public String indexWeb(ModelMap map) {
-		return "index";
+	@RequestMapping(value = "/QR", method = RequestMethod.GET)
+	public String getQrCode() {
+		String ticket = WxService.getQrCodeTicket();
+		return ticket;
 	}
 
 	@RequestMapping("/welcome")
