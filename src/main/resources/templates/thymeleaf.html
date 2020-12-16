@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script> 
 <script type="text/javascript">
 function getQR() {
 	$.ajax({
-		method : 'GET'
+		method : 'GET',
     	url : 'http://localhost:18192/wx/QR',
     	success : function (data) {
             console.log(data);
