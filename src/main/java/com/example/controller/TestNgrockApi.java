@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.entity.Product;
 import com.example.service.WxService;
+import com.example.util.TulingUtil;
 
 //@RestController
 @Controller
@@ -30,6 +32,26 @@ public class TestNgrockApi {
 	public String getQrCode() {
 		String ticket = WxService.getQrCodeTicket();
 		return ticket;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/GetUserInfo")
+	public void getUserInfo(HttpServletRequest request) {
+		// 获取code
+		String code = request.getParameter("code");
+		// 换取accesstoken的地址
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+		url = url.replace("APPID", "wxbbcc503ac70293c3").replace("SECRET", "91284cfecad1bc9270b38269d4682a82")
+				.replace("CODE", code);
+		String result = TulingUtil.get(url);
+		System.out.println(result);
+		String at = JSONObject.parseObject(result).getString("access_token");
+		String openid = JSONObject.parseObject(result).getString("openid");
+		// 拉取用户的基本信息
+		url = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
+		url = url.replace("ACCESS_TOKEN", at).replace("OPENID", openid);
+		result = TulingUtil.get(url);
+		System.out.println(result);
 	}
 
 	@RequestMapping("/welcome")

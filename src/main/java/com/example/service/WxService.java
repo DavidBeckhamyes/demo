@@ -283,6 +283,11 @@ public class WxService {
 			NewsMessage nm = new NewsMessage(requestMap, articles);
 			return nm;
 		}
+		if (msg.equals("登录")) {
+			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbbcc503ac70293c3&redirect_uri=http://5rcpe6.natappfree.cc/wx/GetUserInfo&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+			TextMessage tm = new TextMessage(requestMap, "点击<a href=\"" + url + "\">这里</a>登录");
+			return tm;
+		}
 		// 调用方法返回聊天的内容
 		String resp = chat(msg);
 		TextMessage tm = new TextMessage(requestMap, resp);
@@ -432,5 +437,18 @@ public class WxService {
 		String result = TulingUtil.post(url, data);
 		String ticket = JSONObject.parseObject(result).getString("ticket");
 		return ticket;
+	}
+
+	/**
+	 * 获取用户的基本信息
+	 * 
+	 * @return
+	 * @author zhan
+	 */
+	public static String getUserInfo(String openid) {
+		String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
+		url = url.replace("ACCESS_TOKEN", getAccessToken()).replace("OPENID", openid);
+		String result = TulingUtil.get(url);
+		return result;
 	}
 }
