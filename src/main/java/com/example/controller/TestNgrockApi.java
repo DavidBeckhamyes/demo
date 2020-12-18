@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Product;
@@ -24,6 +25,7 @@ import com.example.service.WxService;
 @RequestMapping("/wx")
 public class TestNgrockApi {
 
+	@ResponseBody
 	@RequestMapping(value = "/QR", method = RequestMethod.GET)
 	public String getQrCode() {
 		String ticket = WxService.getQrCodeTicket();
@@ -42,12 +44,14 @@ public class TestNgrockApi {
 		return "thymeleaf";
 	}
 
+	@ResponseBody
 	@RequestMapping("/test")
 	public String index() {
 		return "Greeting from SpringBoot";
 
 	}
 
+	@ResponseBody
 	@RequestMapping("/receiveReq")
 	public String test(HttpServletRequest request) {
 		// 签名
@@ -68,6 +72,7 @@ public class TestNgrockApi {
 	}
 
 	// 调用核心业务类接收消息、处理消息跟推送消息
+	@ResponseBody
 	@RequestMapping(value = "/receiveReq", method = RequestMethod.POST)
 	protected void post(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.setCharacterEncoding("utf8");
