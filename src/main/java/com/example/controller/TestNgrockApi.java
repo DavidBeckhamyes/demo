@@ -68,7 +68,8 @@ public class TestNgrockApi {
 
 	@ResponseBody
 	@RequestMapping("/test")
-	public String index() {
+	public String index(HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		return "Greeting from SpringBoot";
 
 	}

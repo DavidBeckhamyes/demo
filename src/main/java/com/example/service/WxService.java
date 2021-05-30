@@ -284,7 +284,7 @@ public class WxService {
 			return nm;
 		}
 		if (msg.equals("登录")) {
-			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbbcc503ac70293c3&redirect_uri=http://5rcpe6.natappfree.cc/wx/GetUserInfo&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbbcc503ac70293c3&redirect_uri=http://zlhwechat.vipgz1.idcfengye.com/wx/GetUserInfo&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 			TextMessage tm = new TextMessage(requestMap, "点击<a href=\"" + url + "\">这里</a>登录");
 			return tm;
 		}
@@ -350,10 +350,8 @@ public class WxService {
 	/**
 	 * 上传临时素材
 	 * 
-	 * @param path
-	 *            上传的文件的路径
-	 * @param type
-	 *            上传的文件类型
+	 * @param path 上传的文件的路径
+	 * @param type 上传的文件类型
 	 * @return
 	 * @author zhan
 	 */
