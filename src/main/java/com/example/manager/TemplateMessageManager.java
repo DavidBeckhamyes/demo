@@ -29,12 +29,12 @@ public class TemplateMessageManager {
 	 * 
 	 * @author zhan
 	 */
-	public static void sendTemplateMessage() {
+	public static void sendTemplateMessage(String openid) {
 		String at = WxService.getAccessToken();
 		String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + at;
 		String resultData = "";
 		WxTemplate t = new WxTemplate();
-		t.setTouser("oq3FLv6uifHWSOLM5Z8Tk6xg6zAQ");
+		t.setTouser(openid);
 		t.setTemplate_id("PrZY21P7oM65H_T574eDONZ9KgJirUzaokMuK4kdxYQ");
 		Map<String, TemplateData> m = new HashMap<String, TemplateData>();
 		TemplateData first = new TemplateData();

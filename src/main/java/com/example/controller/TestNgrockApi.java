@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.entity.Product;
+import com.example.manager.TemplateMessageManager;
 import com.example.service.WxService;
 import com.example.util.TulingUtil;
 
@@ -52,6 +53,16 @@ public class TestNgrockApi {
 		url = url.replace("ACCESS_TOKEN", at).replace("OPENID", openid);
 		result = TulingUtil.get(url);
 		System.out.println(result);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/GetCode")
+	public void getCode(HttpServletRequest request) {
+		//接收来之页面a标签重定向的参数
+	    String code = request.getParameter("code");
+	  //返回openid
+	    String openid = WxService.getOpenid("wxbbcc503ac70293c3", "91284cfecad1bc9270b38269d4682a82", code);
+	    TemplateMessageManager.sendTemplateMessage(openid);
 	}
 
 	@RequestMapping("/welcome")
