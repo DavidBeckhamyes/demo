@@ -36,6 +36,8 @@ public class TemplateMessageManager {
 		WxTemplate t = new WxTemplate();
 		t.setTouser(openid);
 		t.setTemplate_id("PrZY21P7oM65H_T574eDONZ9KgJirUzaokMuK4kdxYQ");
+		t.setUrl(
+				"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbbcc503ac70293c3&redirect_uri=http://zlhwechat.vipgz1.idcfengye.com/wx/GetUserInfo&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect");
 		Map<String, TemplateData> m = new HashMap<String, TemplateData>();
 		TemplateData first = new TemplateData();
 		first.setColor("#173177");

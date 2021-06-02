@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.entity.Product;
-import com.example.manager.TemplateMessageManager;
 import com.example.service.WxService;
 import com.example.util.TulingUtil;
 
@@ -35,9 +34,8 @@ public class TestNgrockApi {
 		return ticket;
 	}
 
-	@ResponseBody
 	@RequestMapping(value = "/GetUserInfo")
-	public void getUserInfo(HttpServletRequest request) {
+	public String getUserInfo(HttpServletRequest request, Map<String, Object> map) {
 		// 获取code
 		String code = request.getParameter("code");
 		// 换取accesstoken的地址
@@ -52,17 +50,10 @@ public class TestNgrockApi {
 		url = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
 		url = url.replace("ACCESS_TOKEN", at).replace("OPENID", openid);
 		result = TulingUtil.get(url);
-		System.out.println(result);
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/GetCode")
-	public void getCode(HttpServletRequest request) {
-		//接收来之页面a标签重定向的参数
-	    String code = request.getParameter("code");
-	  //返回openid
-	    String openid = WxService.getOpenid("wxbbcc503ac70293c3", "91284cfecad1bc9270b38269d4682a82", code);
-	    TemplateMessageManager.sendTemplateMessage(openid);
+		System.out.println("获取到的用户信息是:" + result);
+		map.put("province", JSONObject.parseObject(result).getString("province"));
+		map.put("nickname", JSONObject.parseObject(result).getString("nickname"));
+		return "EmployeeInformation";
 	}
 
 	@RequestMapping("/welcome")

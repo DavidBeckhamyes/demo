@@ -35,6 +35,7 @@ import com.example.entity.NewsMessage;
 import com.example.entity.TextMessage;
 import com.example.entity.VideoMessage;
 import com.example.entity.VoiceMessage;
+import com.example.manager.TemplateMessageManager;
 import com.example.util.TulingUtil;
 import com.thoughtworks.xstream.XStream;
 
@@ -288,34 +289,10 @@ public class WxService {
 			TextMessage tm = new TextMessage(requestMap, "点击<a href=\"" + url + "\">这里</a>登录");
 			return tm;
 		}
-		if (msg.equals("面试结果")) {
-			String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxbbcc503ac70293c3&redirect_uri=http://zlhwechat.vipgz1.idcfengye.com/wx/GetCode&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-			TextMessage tm = new TextMessage(requestMap, "点击<a href=\"" + url + "\">这里</a>查看面试结果");
-			return tm;
-		}
 		// 调用方法返回聊天的内容
 		String resp = chat(msg);
 		TextMessage tm = new TextMessage(requestMap, resp);
 		return tm;
-	}
-
-	/**
-	 * Description: 通过code获取用户openid<BR>
-	 * 
-	 * @author dsn
-	 * @date 2018年9月21日 下午12:02:18
-	 * @param appid
-	 * @param appsecret
-	 * @param code
-	 * @return
-	 * @version 1.0
-	 */
-	public static String getOpenid(String appid, String appsecret, String code) {
-		String openid_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appid + "&secret=" + appsecret
-				+ "&code=" + code + "&grant_type=authorization_code";
-		String result = TulingUtil.get(openid_url);
-		String openid = JSONObject.parseObject(result).getString("openid");
-		return openid;
 	}
 
 	/**
@@ -348,10 +325,9 @@ public class WxService {
 	 * 
 	 */
 	private static BaseMessage welcomeMyFridends(Map<String, String> requestMap) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("欢迎听课的大佬们关注我~~\n");
-		sb.append("请各位大佬和我内置的语音机器人聊天吧！！");
-		return new TextMessage(requestMap, sb.toString());
+		String openid = requestMap.get("FromUserName");
+		TemplateMessageManager.sendTemplateMessage(openid);
+		return null;
 	}
 
 	/**
