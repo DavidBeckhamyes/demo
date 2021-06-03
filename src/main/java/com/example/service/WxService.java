@@ -311,6 +311,8 @@ public class WxService {
 			return dealView(requestMap);
 		case "subscribe":
 			return welcomeMyFridends(requestMap);
+		case "SCAN":
+			return welcomeBack(requestMap);
 		default:
 			break;
 		}
@@ -328,7 +330,18 @@ public class WxService {
 		String openid = requestMap.get("FromUserName");
 		TemplateMessageManager.sendTemplateMessage(openid);
 		StringBuilder sb = new StringBuilder();
-		sb.append("感谢各位大佬的关注/n");
+		sb.append("感谢各位看官的关注!\n");
+		sb.append("各位看官可以点击上面的模板消息，也可以随意在文本框内输入文字和机器人聊天~\n");
+		TextMessage tm = new TextMessage(requestMap, sb.toString());
+		return tm;
+	}
+
+	/**
+	 * 欢迎再次回来
+	 */
+	private static BaseMessage welcomeBack(Map<String, String> requestMap) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("欢迎再次光临!\n");
 		TextMessage tm = new TextMessage(requestMap, sb.toString());
 		return tm;
 	}
