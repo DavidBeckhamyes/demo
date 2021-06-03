@@ -327,7 +327,10 @@ public class WxService {
 	private static BaseMessage welcomeMyFridends(Map<String, String> requestMap) {
 		String openid = requestMap.get("FromUserName");
 		TemplateMessageManager.sendTemplateMessage(openid);
-		return null;
+		StringBuilder sb = new StringBuilder();
+		sb.append("感谢各位大佬的关注/n");
+		TextMessage tm = new TextMessage(requestMap, sb.toString());
+		return tm;
 	}
 
 	/**
