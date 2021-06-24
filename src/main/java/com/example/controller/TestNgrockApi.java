@@ -27,6 +27,11 @@ import com.example.util.TulingUtil;
 @RequestMapping("/wx")
 public class TestNgrockApi {
 
+	/**
+	 * 生成带参数二维码（请求层）
+	 * 
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/QR", method = RequestMethod.GET)
 	public String getQrCode() {
@@ -43,7 +48,7 @@ public class TestNgrockApi {
 		url = url.replace("APPID", "wxbbcc503ac70293c3").replace("SECRET", "91284cfecad1bc9270b38269d4682a82")
 				.replace("CODE", code);
 		String result = TulingUtil.get(url);
-		System.out.println(result);
+		System.out.println("获取到的用户信息是->" + result);
 		String at = JSONObject.parseObject(result).getString("access_token");
 		String openid = JSONObject.parseObject(result).getString("openid");
 		// 拉取用户的基本信息
@@ -53,18 +58,19 @@ public class TestNgrockApi {
 		System.out.println("获取到的用户信息是:" + result);
 		map.put("province", JSONObject.parseObject(result).getString("province"));
 		map.put("nickname", JSONObject.parseObject(result).getString("nickname"));
+		map.put("headimgurl", JSONObject.parseObject(result).getString("headimgurl"));
 		return "EmployeeInformation";
 	}
 
 	@RequestMapping("/welcome")
 	public String welcome(Map<String, Object> map) {
 		// 给Thymeleaf 准备数据
-		map.put("welcome", "欢迎来到王者荣耀"); // 给request域中方welcome
-		List<Product> prods = new ArrayList<>();
-		prods.add(new Product("a", 100, 10));
-		prods.add(new Product("b", 200, 20));
-		prods.add(new Product("c", 300, 30));
-		map.put("prods", prods);
+		map.put("welcome", "欢迎聆听微信课堂~"); // 给request域中方welcome
+		// List<Product> prods = new ArrayList<>();
+		// prods.add(new Product("a", 100, 10));
+		// prods.add(new Product("b", 200, 20));
+		// prods.add(new Product("c", 300, 30));
+		// map.put("prods", prods);
 		return "thymeleaf";
 	}
 
@@ -87,6 +93,7 @@ public class TestNgrockApi {
 		String nonce = request.getParameter("nonce");
 		// 随机字符串
 		String echostr = request.getParameter("echostr");
+		System.out.println("echoStr->"+echostr);
 		// 校验请求
 		if (WxService.check(timestamp, nonce, signature)) {
 			return echostr;
@@ -104,7 +111,7 @@ public class TestNgrockApi {
 		response.setCharacterEncoding("utf8");
 		// 处理消息和事件推送
 		Map<String, String> requestMap = WxService.parseRequest(request.getInputStream());
-		System.out.println(requestMap);
+		System.out.println("接收到的消息体是->" + requestMap);
 		// 准备回复的数据包
 		String respXml = WxService.getResponse(requestMap);
 		PrintWriter out = response.getWriter();

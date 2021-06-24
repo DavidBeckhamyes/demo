@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>带参数二维码</title>
 </head>
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script> 
 <script type="text/javascript">
@@ -23,11 +23,11 @@ function getQR() {
 </script>
 <body>
 	<p th:text="${welcome}">welcome to thymeleaf...</p>
-	<tr th:each="prod:${prods}">
+<!-- 	<tr th:each="prod:${prods}">
 		<td th:text="${prod.name}"></td>
 		<td th:text="${prod.price}"></td>
 		<td th:text="${prod.inStock}"></td>
-	</tr>
+	</tr> -->
 	<button th:onclick="'javascript:getQR()'">生成二维码</button>
 	<img src="" alt="" />
 </body>
